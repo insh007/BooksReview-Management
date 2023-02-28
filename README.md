@@ -1,12 +1,14 @@
-# book-management-project3-self
+# project - BooksReview Management
 
-Key points
+## Key points
 Create a group database groupXDatabase. You can clean the db you previously used and resue that.
 This time each group should have a single git branch. Coordinate amongst yourselves by ensuring every next person pulls the code last pushed by a team mate. You branch will be checked as part of the demo. Branch name should follow the naming convention project/booksManagementGroupX
 Follow the naming conventions exactly as instructed.
 
-Models
-User Model
+## Models
+
+## User Model
+```
 { 
   title: {string, mandatory, enum[Mr, Mrs, Miss]},
   name: {string, mandatory},
@@ -21,8 +23,10 @@ User Model
   createdAt: {timestamp},
   updatedAt: {timestamp}
 }
+```
 
-Books Model
+## Books Model
+```
 { 
   title: {string, mandatory, unique},
   excerpt: {string, mandatory}, 
@@ -37,8 +41,10 @@ Books Model
   createdAt: {timestamp},
   updatedAt: {timestamp},
 }
+```
 
-Review Model (Books review)
+## Review Model (Books review)
+```
 {
   bookId: {ObjectId, mandatory, refs to book model},
   reviewedBy: {string, mandatory, default 'Guest', value: reviewer's name},
@@ -47,28 +53,31 @@ Review Model (Books review)
   review: {string, optional}
   isDeleted: {boolean, default: false},
 }
+```
 
-User APIs
-POST /register
+# User APIs
+
+## POST /register
 Create a user - atleast 5 users
 Create a user document from request body.
 Return HTTP status 201 on a succesful user creation. Also return the user document. The response should be a JSON object like this
 Return HTTP status 400 if no params or invalid params received in request body. The response should be a JSON object like this
 
-POST /login
+## POST /login
 Allow an user to login with their email and password.
 On a successful login attempt return a JWT token contatining the userId, exp, iat. The response should be a JSON object like this
 If the credentials are incorrect return a suitable error message with a valid HTTP status code. The response should be a JSON object like this
 
-Books API
-POST /books
+# Books API
+
+## POST /books
 Create a book document from request body. Get userId in request body only.
 Make sure the userId is a valid userId by checking the user exist in the users collection.
 Return HTTP status 201 on a succesful book creation. Also return the book document. The response should be a JSON object like this
 Create atleast 10 books for each user
 Return HTTP status 400 for an invalid request with a response body like this
 
-GET /books
+## GET /books
 Returns all books in the collection that aren't deleted. Return only book _id, title, excerpt, userId, category, releasedAt, reviews field. Response example here
 Return the HTTP status 200 if any documents are found. The response structure should be like this
 If no documents are found then return an HTTP status 404 with a response like this
@@ -77,13 +86,14 @@ By userId
 By category
 By subcategory example of a query url: books?filtername=filtervalue&f2=fv2
 Return all books sorted by book name in Alphabatical order
-GET /books/:bookId
+
+## GET /books/:bookId
 Returns a book with complete details including reviews. Reviews array would be in the form of Array. Response example here
 Return the HTTP status 200 if any documents are found. The response structure should be like this
 If the book has no reviews then the response body should include book detail as shown here and an empty array for reviewsData.
 If no documents are found then return an HTTP status 404 with a response like this
 
-PUT /books/:bookId
+## PUT /books/:bookId
 Update a book by changing its
 title
 excerpt
@@ -93,36 +103,38 @@ Make sure the unique constraints are not violated when making the update
 Check if the bookId exists (must have isDeleted false and is present in collection). If it doesn't, return an HTTP status 404 with a response body like this
 Return an HTTP status 200 if updated successfully with a body like this
 Also make sure in the response you return the updated book document.
-DELETE /books/:bookId
+
+## DELETE /books/:bookId
 Check if the bookId exists and is not deleted. If it does, mark it deleted and return an HTTP status 200 with a response body with status and message.
 If the book document doesn't exist then return an HTTP status of 404 with a body like this
 
-Review APIs
-POST /books/:bookId/review
+# Review APIs
+
+## POST /books/:bookId/review
 Add a review for the book in reviews collection.
 Check if the bookId exists and is not deleted before adding the review. Send an error response with appropirate status code like this if the book does not exist
 Get review details like review, rating, reviewer's name in request body.
 Update the related book document by increasing its review count
 Return the updated book document with reviews data on successful operation. The response body should be in the form of JSON object like this
 
-PUT /books/:bookId/review/:reviewId
+## PUT /books/:bookId/review/:reviewId
 Update the review - review, rating, reviewer's name.
 Check if the bookId exists and is not deleted before updating the review. Check if the review exist before updating the review. Send an error response with appropirate status code like this if the book does not exist
 Get review details like review, rating, reviewer's name in request body.
 Return the updated book document with reviews data on successful operation. The response body should be in the form of JSON object like this
 
-DELETE /books/:bookId/review/:reviewId
+## DELETE /books/:bookId/review/:reviewId
 Check if the review exist with the reviewId. Check if the book exist with the bookId. Send an error response with appropirate status code like this if the book or book review does not exist
 Delete the related reivew.
 Update the books document - decrease review count by one
 
-Authentication
+## Authentication
 Make sure all the book routes are protected.
-Authorisation
+## Authorisation
 Make sure that only the owner of the books is able to create, edit or delete the book.
 In case of unauthorized access return an appropirate error message.
 
-Testing
+## Testing
 To test these apis create a new collection in Postman named Project 4 Books Management
 Each api should have a new request in this collection
 Each request in the collection should be rightly named. Eg Create user, Create book, Get books etc
@@ -131,6 +143,7 @@ Refer below sample A Postman collection and request sample
 
 Response
 Successful Response structure
+```
 {
   status: true,
   message: 'Success',
@@ -138,13 +151,20 @@ Successful Response structure
 
   }
 }
+```
+
 Error Response structure
+```
 {
   status: false,
   message: ""
 }
+```
+
 Collections
-users
+## users
+
+```
 {
   _id: ObjectId("88abc190ef0288abc190ef02"),
   title: "Mr",
@@ -160,7 +180,10 @@ users
   "createdAt": "2021-09-17T04:25:07.803Z",
   "updatedAt": "2021-09-17T04:25:07.803Z",
 }
-books
+```
+
+## books
+```
 {
   "_id": ObjectId("88abc190ef0288abc190ef55"),
   "title": "How to win friends and influence people",
@@ -175,7 +198,10 @@ books
   "createdAt": "2021-09-17T04:25:07.803Z",
   "updatedAt": "2021-09-17T04:25:07.803Z",
 }
-reviews
+```
+
+## reviews
+```
 {
   "_id": ObjectId("88abc190ef0288abc190ef88"),
   bookId: ObjectId("88abc190ef0288abc190ef55"),
@@ -184,8 +210,11 @@ reviews
   rating: 4,
   review: "An exciting nerving thriller. A gripping tale. A must read book."
 }
+```
 Response examples
-Get books response
+
+## Get books response
+```
 {
   status: true,
   message: 'Books list',
@@ -210,7 +239,10 @@ Get books response
     }
   ]
 }
-Book details response
+```
+
+## Book details response
+```
 {
   status: true,
   message: 'Books list',
@@ -262,7 +294,10 @@ Book details response
     ]
   }
 }
-Book details response no reviews
+```
+
+## Book details response no reviews
+```
 {
   status: true,
   message: 'Books list',
@@ -281,3 +316,4 @@ Book details response no reviews
     "reviewsData": []
   }
 }
+```
